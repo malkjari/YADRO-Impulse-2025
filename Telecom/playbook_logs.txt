@@ -1,0 +1,67 @@
+
+PLAY [Script deploying via Docker and Ansible] *********************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [localhost]
+
+TASK [Install Docker] **********************************************************
+changed: [localhost]
+
+TASK [Verify Docker version] ***************************************************
+ok: [localhost]
+
+TASK [Show Docker version] *****************************************************
+ok: [localhost] => {
+    "docker_version.stdout": "Docker version 28.1.1, build 4eba377"
+}
+
+TASK [Build Docker image] ******************************************************
+ok: [localhost]
+
+TASK [Remove old container if exists] ******************************************
+changed: [localhost]
+
+TASK [Run container] ***********************************************************
+changed: [localhost]
+
+TASK [Wait for container to complete] ******************************************
+ok: [localhost]
+
+TASK [Get container logs] ******************************************************
+ok: [localhost]
+
+TASK [Show logs] ***************************************************************
+ok: [localhost] => {
+    "container_logs.stdout_lines": [
+        "2025-05-06 18:55:30.515338 - httpRequests.py - Request Code: 226",
+        "\tResponce code: 226",
+        "\tResponce message: IM Used",
+        "2025-05-06 18:55:31.191581 - httpRequests.py - Request Code: 500",
+        "\tResponce code: 500",
+        "\tResponce message: Internal Server Error",
+        "HTTP Error from httpRequests.py: code: 500, message: Internal Server Error",
+        "2025-05-06 18:55:32.024809 - httpRequests.py - Request Code: 392",
+        "\tResponce code: 392",
+        "\tResponce message: 392 Unknown Code",
+        "2025-05-06 18:55:32.732305 - httpRequests.py - Request Code: 527",
+        "\tResponce code: 527",
+        "\tResponce message: Railgun Error",
+        "HTTP Error from httpRequests.py: code: 527, message: Railgun Error",
+        "2025-05-06 18:55:33.418880 - httpRequests.py - Request Code: 368",
+        "\tResponce code: 368",
+        "\tResponce message: 368 Unknown Code"
+    ]
+}
+
+TASK [Verify script output] ****************************************************
+ok: [localhost] => {
+    "changed": false,
+    "msg": "Test passed - script output verified via docker logs"
+}
+
+TASK [Remove container] ********************************************************
+changed: [localhost]
+
+PLAY RECAP *********************************************************************
+localhost                  : ok=12   changed=4    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+

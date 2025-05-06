@@ -1,0 +1,77 @@
+---
+- name: Script deploying via Docker and Ansible
+  hosts: localhost
+  connection: local
+  become: yes
+
+  tasks:
+    # установка Docker на Kali
+    - name: Install Docker
+      shell: |
+        apt update
+        apt install -y apt-transport-https ca-certificates curl software-properties-common uidmap
+        curl -fsSL https://download.docker.com/linux/debian/gpg | gpg --batch --dearmor -o /etc/apt/trusted.gpg.d/docker-archive-keyring.gpg
+        echo "deb [arch=amd64] https://download.docker.com/linux/debian bullseye stable" | tee /etc/apt/sources.list.d/docker.list
+        apt update
+        apt install -y docker-ce docker-ce-cli containerd.io
+        usermod -aG docker $USER
+        systemctl enable --now docker
+
+    # проверка версии Docker
+    - name: Verify Docker version
+      command: docker --version
+      register: docker_version
+      changed_when: false
+
+    - name: Show Docker version
+      debug:
+        var: docker_version.stdout
+
+    # вывод версии
+    - name: Build Docker image
+      command: docker build -t http-script .
+      args:
+        chdir: "{{ playbook_dir }}"
+      changed_when: false
+
+    # удаление старого контейнера
+    - name: Remove old container if exists
+      command: docker rm -f http-runner
+      ignore_errors: yes
+
+    # запуск нового контейнера (не важно, был ли он изначально, всегда удаляю и создаю новый)
+    - name: Run container
+      command: docker run -d --name http-runner http-script
+      register: container_run
+
+    # если не подождать, логи считаются пустыми 
+    - name: Wait for container to complete 
+      command: sleep 5
+      changed_when: false
+
+    # Docker logs
+    - name: Get container logs
+      command: docker logs http-runner
+      register: container_logs
+      changed_when: false
+
+    # вывод логов
+    - name: Show logs
+      debug:
+        var: container_logs.stdout_lines
+      changed_when: false
+
+    # проверка выполнения скрипта
+    - name: Verify script output
+      assert:
+        that:
+          - "'httpRequests.py' in container_logs.stdout"
+          - "'Responce code:' in container_logs.stdout"
+        success_msg: "Test passed - script output verified via docker logs"
+        fail_msg: "Test failed - expected output not found in docker logs"
+
+    # очистка
+    - name: Remove container
+      command: docker rm -f http-runner
+      ignore_errors: yes
+      when: container_run.changed
