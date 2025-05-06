@@ -1,0 +1,16 @@
+2025-05-06T19:13:58.453884052Z 2025-05-06 19:13:55.599727 - httpRequests.py - Request Code: 244
+2025-05-06T19:13:58.453942110Z 	Responce code: 244
+2025-05-06T19:13:58.453944498Z 	Responce message: 244 Unknown Code
+2025-05-06T19:13:58.453945669Z 2025-05-06 19:13:56.305717 - httpRequests.py - Request Code: 280
+2025-05-06T19:13:58.453946719Z 	Responce code: 280
+2025-05-06T19:13:58.453947783Z 	Responce message: 280 Unknown Code
+2025-05-06T19:13:58.453949061Z 2025-05-06 19:13:56.991292 - httpRequests.py - Request Code: 375
+2025-05-06T19:13:58.453950208Z 	Responce code: 375
+2025-05-06T19:13:58.453951164Z 	Responce message: 375 Unknown Code
+2025-05-06T19:13:58.453952131Z 2025-05-06 19:13:57.682474 - httpRequests.py - Request Code: 357
+2025-05-06T19:13:58.453953176Z 	Responce code: 357
+2025-05-06T19:13:58.453954106Z 	Responce message: 357 Unknown Code
+2025-05-06T19:13:58.453955081Z 2025-05-06 19:13:58.452094 - httpRequests.py - Request Code: 598
+2025-05-06T19:13:58.453956081Z 	Responce code: 598
+2025-05-06T19:13:58.453957043Z 	Responce message: 598 Unknown Code
+2025-05-06T19:13:58.453958098Z HTTP Error from httpRequests.py: code: 598, message: 598 Unknown Code
